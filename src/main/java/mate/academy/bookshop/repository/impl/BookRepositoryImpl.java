@@ -1,6 +1,7 @@
 package mate.academy.bookshop.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import mate.academy.bookshop.model.Book;
 import mate.academy.bookshop.repository.BookRepository;
@@ -33,6 +34,15 @@ public class BookRepositoryImpl implements BookRepository {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(Book.class, id));
+        } catch (Exception e) {
+            throw new RuntimeException("Can not find book from DB by id: " + id, e);
         }
     }
 
