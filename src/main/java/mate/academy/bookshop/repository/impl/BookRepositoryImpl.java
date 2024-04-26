@@ -8,7 +8,6 @@ import mate.academy.bookshop.repository.BookRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -41,10 +40,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Optional<Book> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Book> bookQuery = session.createQuery("SELECT book FROM Book book "
-                    + "WHERE book.id = :id", Book.class);
-            bookQuery.setParameter("id", id);
-            return bookQuery.uniqueResultOptional();
+            return Optional.ofNullable(session.get(Book.class, id));
         } catch (Exception e) {
             throw new RuntimeException("Can not find book from DB by id: " + id, e);
         }
