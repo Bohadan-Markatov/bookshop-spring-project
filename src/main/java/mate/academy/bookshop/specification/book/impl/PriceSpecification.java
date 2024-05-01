@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PriceSpecification implements BookSpecificationProvider {
-    private static final String COLUMN_NAME = "price";
+    public static final String COLUMN_NAME = "price";
 
     @Override
     public Specification<Book> getSpecification(BookSearchParameters bookSearchParameters) {

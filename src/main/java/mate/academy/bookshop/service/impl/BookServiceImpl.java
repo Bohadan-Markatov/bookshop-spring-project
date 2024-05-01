@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import mate.academy.bookshop.dto.BookDto;
 import mate.academy.bookshop.dto.BookRequestDto;
+import mate.academy.bookshop.dto.BookSearchParameters;
 import mate.academy.bookshop.exception.EntityNotFoundException;
 import mate.academy.bookshop.mapper.BookMapper;
 import mate.academy.bookshop.model.Book;

@@ -4,7 +4,6 @@ import java.util.List;
 import mate.academy.bookshop.dto.BookDto;
 import mate.academy.bookshop.dto.BookRequestDto;
 import mate.academy.bookshop.dto.BookSearchParameters;
-import mate.academy.bookshop.dto.CreateBookRequestDto;
 
 public interface BookService {
 
