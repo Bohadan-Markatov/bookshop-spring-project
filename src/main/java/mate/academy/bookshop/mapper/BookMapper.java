@@ -2,8 +2,7 @@ package mate.academy.bookshop.mapper;
 
 import mate.academy.bookshop.config.MapperConfig;
 import mate.academy.bookshop.dto.BookDto;
-import mate.academy.bookshop.dto.CreateBookRequestDto;
-import mate.academy.bookshop.dto.UpdateBookRequestDto;
+import mate.academy.bookshop.dto.BookRequestDto;
 import mate.academy.bookshop.model.Book;
 import org.mapstruct.Mapper;
 
@@ -11,7 +10,5 @@ import org.mapstruct.Mapper;
 public interface BookMapper {
     BookDto toDto(Book book);
 
-    Book toModel(CreateBookRequestDto bookDto);
-
-    Book toModel(UpdateBookRequestDto bookDto);
+    Book toModel(BookRequestDto bookDto);
 }

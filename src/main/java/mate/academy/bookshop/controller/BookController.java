@@ -3,8 +3,7 @@ package mate.academy.bookshop.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookshop.dto.BookDto;
-import mate.academy.bookshop.dto.CreateBookRequestDto;
-import mate.academy.bookshop.dto.UpdateBookRequestDto;
+import mate.academy.bookshop.dto.BookRequestDto;
 import mate.academy.bookshop.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,13 +24,13 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public BookDto createBook(@RequestBody CreateBookRequestDto createBookRequestDto) {
+    public BookDto createBook(@RequestBody BookRequestDto createBookRequestDto) {
         return bookService.save(createBookRequestDto);
     }
 
     @PutMapping("/{id}")
     public BookDto updateBook(@PathVariable Long id,
-                              @RequestBody UpdateBookRequestDto updateBookRequestDto) {
+                              @RequestBody BookRequestDto updateBookRequestDto) {
         return bookService.update(id, updateBookRequestDto);
     }
 
