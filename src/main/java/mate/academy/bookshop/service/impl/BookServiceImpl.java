@@ -3,7 +3,7 @@ package mate.academy.bookshop.service.impl;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import mate.academy.bookshop.dto.BookDto;
-import mate.academy.bookshop.dto.CreateBookRequestDto;
+import mate.academy.bookshop.dto.BookRequestDto;
 import mate.academy.bookshop.exception.EntityNotFoundException;
 import mate.academy.bookshop.mapper.BookMapper;
 import mate.academy.bookshop.model.Book;
@@ -18,9 +18,34 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public BookDto save(CreateBookRequestDto createBookRequestDto) {
+    public BookDto save(BookRequestDto createBookRequestDto) {
         Book book = bookMapper.toModel(createBookRequestDto);
         return bookMapper.toDto(bookRepository.save(book));
+    }
+
+    @Override
+    public BookDto update(Long id, BookRequestDto updateBookRequestDto) {
+        Book createdBook = bookRepository.findById(id).orElseThrow(()
+                -> new EntityNotFoundException("Can't find entity by id: " + id));
+        if (updateBookRequestDto.getTitle() != null) {
+            createdBook.setTitle(updateBookRequestDto.getTitle());
+        }
+        if (updateBookRequestDto.getAuthor() != null) {
+            createdBook.setAuthor(updateBookRequestDto.getAuthor());
+        }
+        if (updateBookRequestDto.getIsbn() != null) {
+            createdBook.setIsbn(updateBookRequestDto.getIsbn());
+        }
+        if (updateBookRequestDto.getPrice() != null) {
+            createdBook.setPrice(updateBookRequestDto.getPrice());
+        }
+        if (updateBookRequestDto.getDescription() != null) {
+            createdBook.setDescription(updateBookRequestDto.getDescription());
+        }
+        if (updateBookRequestDto.getCoverImage() != null) {
+            createdBook.setCoverImage(updateBookRequestDto.getCoverImage());
+        }
+        return bookMapper.toDto(bookRepository.save(createdBook));
     }
 
     @Override
@@ -28,6 +53,12 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id).orElseThrow(()
                 -> new EntityNotFoundException("Can't find entity by id: " + id));
         return bookMapper.toDto(book);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        findById(id);
+        bookRepository.deleteById(id);
     }
 
     @Override
