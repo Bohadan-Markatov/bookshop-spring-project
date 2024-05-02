@@ -18,4 +18,6 @@ public interface BookService {
     List<BookDto> findAll();
 
     List<BookDto> search(BookSearchParameters bookSearchParameters);
+
+    boolean existByIsbn(String isbn);
 }
