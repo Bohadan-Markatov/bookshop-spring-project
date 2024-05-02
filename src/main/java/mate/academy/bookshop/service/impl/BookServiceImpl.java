@@ -64,4 +64,9 @@ public class BookServiceImpl implements BookService {
                 .map(bookMapper::toDto)
                 .toList();
     }
+
+    @Override
+    public boolean existByIsbn(String isbn) {
+        return bookRepository.existsByIsbn(isbn);
+    }
 }

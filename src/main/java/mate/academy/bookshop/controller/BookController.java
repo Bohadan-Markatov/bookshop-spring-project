@@ -1,5 +1,6 @@
 package mate.academy.bookshop.controller;
 
+import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -30,14 +31,14 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     @Operation(summary = "Create a new book", description = "Create a new book")
-    public BookDto createBook(@RequestBody BookRequestDto createBookRequestDto) {
+    public BookDto createBook(@RequestBody @Valid BookRequestDto createBookRequestDto) {
         return bookService.save(createBookRequestDto);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a book", description = "Update a book")
     public BookDto updateBook(@PathVariable Long id,
-                              @RequestBody BookRequestDto updateBookRequestDto) {
+                              @RequestBody @Valid BookRequestDto updateBookRequestDto) {
         return bookService.update(id, updateBookRequestDto);
     }
 

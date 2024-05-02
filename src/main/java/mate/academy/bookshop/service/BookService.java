@@ -19,4 +19,7 @@ public interface BookService {
     List<BookDto> findAll(Pageable pageable);
 
     List<BookDto> search(Pageable pageable, BookSearchParameters bookSearchParameters);
+
+    boolean existByIsbn(String isbn);
+
 }
