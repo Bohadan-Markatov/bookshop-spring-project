@@ -1,21 +1,43 @@
 package mate.academy.bookshop.util;
 
+import java.util.regex.Pattern;
+
 public class IsbnFormatter {
-    private static final int STANDARD_BOOK_NUMBER_LENGTH = 9;
-    private static final int CHECK_NUMBER_LENGTH = 1;
+    private static final String ISBN10_VALIDATION_PATTERN =
+            "^(?:ISBN(?:-10)?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$)"
+                    + "[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$";
+    private static final String ISBN13_VALIDATION_PATTERN =
+            "^(?:ISBN(?:-13)?:? )?(?=[0-9]{13}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)"
+                    + "97[89][- ]?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9]$";
+    private static final int ISBN10_CODE_LENGTH = 10;
+    private static final int ISBN13_CODE_LENGTH = 13;
 
     public static String format(String isbn) {
+        int isbnCondeLength = getIsbnCondLength(isbn);
+
         char[] c = isbn.toCharArray();
 
         StringBuilder builder = new StringBuilder();
-        for (int i = c.length - 1 - CHECK_NUMBER_LENGTH; i >= 0; i--) {
+        for (int i = c.length - 1; i >= 0; i--) {
             if (Character.isDigit(c[i])) {
                 builder.append(c[i]);
-                if (builder.length() == STANDARD_BOOK_NUMBER_LENGTH) {
+                if (builder.length() == isbnCondeLength) {
                     break;
                 }
             }
         }
         return builder.reverse().toString();
+    }
+
+    private static int getIsbnCondLength(String isbn) {
+        if (isbn != null && Pattern.compile(ISBN10_VALIDATION_PATTERN)
+                .matcher(isbn).matches()) {
+            return ISBN10_CODE_LENGTH;
+        } else if (isbn != null && Pattern.compile(ISBN13_VALIDATION_PATTERN)
+                .matcher(isbn).matches()) {
+            return ISBN13_CODE_LENGTH;
+        } else {
+            throw new IllegalArgumentException("Invalid ISBN format");
+        }
     }
 }

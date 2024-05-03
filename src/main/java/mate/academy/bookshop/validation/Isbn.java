@@ -12,7 +12,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Isbn {
     String message() default "Invalid format isbn";
-    String uniqueMessage() default "ISBN must be unique";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
