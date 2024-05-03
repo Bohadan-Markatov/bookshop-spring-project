@@ -6,12 +6,14 @@ import mate.academy.bookshop.dto.BookDto;
 import mate.academy.bookshop.dto.BookRequestDto;
 import mate.academy.bookshop.dto.BookSearchParameters;
 import mate.academy.bookshop.exception.EntityNotFoundException;
+import mate.academy.bookshop.exception.NotUniqueValueException;
 import mate.academy.bookshop.mapper.BookMapper;
 import mate.academy.bookshop.model.Book;
 import mate.academy.bookshop.repository.BookRepository;
 import mate.academy.bookshop.service.BookService;
 import mate.academy.bookshop.specification.book.BookSpecificationBuilder;
 import org.springframework.data.domain.Pageable;
+import mate.academy.bookshop.util.IsbnFormatter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +26,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(BookRequestDto createBookRequestDto) {
+        if (existByIsbn(IsbnFormatter.format(createBookRequestDto.getIsbn()))) {
+            throw new NotUniqueValueException("ISBN must be unique");
+        }
         Book book = bookMapper.toModel(createBookRequestDto);
         return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
     public BookDto update(Long id, BookRequestDto updateBookRequestDto) {
-        findById(id);
+        BookDto createdBook = findById(id);
+        String oldIsbn = createdBook.getIsbn();
+        String newIsbn = IsbnFormatter.format(updateBookRequestDto.getIsbn());
+        if (existByIsbn(newIsbn) && !oldIsbn.equals(newIsbn)) {
+            throw new NotUniqueValueException("ISBN must be unique");
+        }
         Book updatedBook = bookMapper.toModel(updateBookRequestDto);
         updatedBook.setId(id);
         return bookMapper.toDto(bookRepository.save(updatedBook));

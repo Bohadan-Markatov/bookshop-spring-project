@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -23,11 +24,32 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             HttpHeaders headers, HttpStatusCode status,
             WebRequest request
     ) {
-        ResponseErrorDto errorDto = new ResponseErrorDto();
-        errorDto.setTime(LocalDateTime.now().toString());
-        errorDto.setStatus(HttpStatus.BAD_REQUEST.toString());
-        errorDto.setErrors(getErrors(ex));
+        ResponseErrorDto errorDto = getResponseErrorDto(
+                LocalDateTime.now(), HttpStatus.BAD_REQUEST, getErrors(ex));
         return new ResponseEntity<>(errorDto, headers, status);
+    }
+
+    @ExceptionHandler(NotUniqueValueException.class)
+    public ResponseEntity<Object> handleCustomException(NotUniqueValueException ex) {
+        ResponseErrorDto errorDto = getResponseErrorDto(
+                LocalDateTime.now(), HttpStatus.BAD_REQUEST, List.of(ex.getMessage()));
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleCustomException(EntityNotFoundException ex) {
+        ResponseErrorDto errorDto = getResponseErrorDto(
+                LocalDateTime.now(), HttpStatus.BAD_REQUEST, List.of(ex.getMessage()));
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseErrorDto getResponseErrorDto(LocalDateTime dateTime,
+                                                 HttpStatus status, List<String> errors) {
+        ResponseErrorDto errorDto = new ResponseErrorDto();
+        errorDto.setTime(dateTime.toString());
+        errorDto.setStatus(status.toString());
+        errorDto.setErrors(errors);
+        return errorDto;
     }
 
     private List<String> getErrors(MethodArgumentNotValidException exception) {
