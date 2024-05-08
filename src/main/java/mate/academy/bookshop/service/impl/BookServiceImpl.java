@@ -35,8 +35,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto update(Long id, BookRequestDto updateBookRequestDto) {
-        BookDto createdBook = findById(id);
-        String oldIsbn = createdBook.getIsbn();
+        BookDto existingBook = findById(id);
+        String oldIsbn = existingBook.getIsbn();
         String newIsbn = IsbnFormatter.format(updateBookRequestDto.getIsbn());
         if (existByIsbn(newIsbn) && !oldIsbn.equals(newIsbn)) {
             throw new NotUniqueValueException("ISBN must be unique");
