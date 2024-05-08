@@ -13,7 +13,7 @@ public class IsbnFormatter {
     private static final int ISBN13_CODE_LENGTH = 13;
 
     public static String format(String isbn) {
-        int isbnCondeLength = getIsbnCondLength(isbn);
+        int isbnCondeLength = getIsbnCodeLength(isbn);
 
         char[] c = isbn.toCharArray();
 
@@ -29,15 +29,17 @@ public class IsbnFormatter {
         return builder.reverse().toString();
     }
 
-    private static int getIsbnCondLength(String isbn) {
-        if (isbn != null && Pattern.compile(ISBN10_VALIDATION_PATTERN)
-                .matcher(isbn).matches()) {
-            return ISBN10_CODE_LENGTH;
-        } else if (isbn != null && Pattern.compile(ISBN13_VALIDATION_PATTERN)
-                .matcher(isbn).matches()) {
-            return ISBN13_CODE_LENGTH;
-        } else {
-            throw new IllegalArgumentException("Invalid ISBN format");
+    private static int getIsbnCodeLength(String isbn) {
+        if (isbn != null) {
+            if (Pattern.compile(ISBN10_VALIDATION_PATTERN)
+                    .matcher(isbn).matches()) {
+                return ISBN10_CODE_LENGTH;
+            }
+            if (Pattern.compile(ISBN13_VALIDATION_PATTERN)
+                    .matcher(isbn).matches()) {
+                return ISBN13_CODE_LENGTH;
+            }
         }
+        throw new IllegalArgumentException("Invalid ISBN format");
     }
 }
