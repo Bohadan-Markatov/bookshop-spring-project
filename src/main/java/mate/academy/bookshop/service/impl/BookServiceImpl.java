@@ -1,10 +1,10 @@
 package mate.academy.bookshop.service.impl;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
-import mate.academy.bookshop.dto.BookDto;
-import mate.academy.bookshop.dto.BookRequestDto;
-import mate.academy.bookshop.dto.BookSearchParameters;
+import lombok.RequiredArgsConstructor;
+import mate.academy.bookshop.dto.book.BookDto;
+import mate.academy.bookshop.dto.book.BookRequestDto;
+import mate.academy.bookshop.dto.book.BookSearchParameters;
 import mate.academy.bookshop.exception.EntityNotFoundException;
 import mate.academy.bookshop.exception.NotUniqueValueException;
 import mate.academy.bookshop.mapper.BookMapper;
@@ -18,7 +18,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
@@ -26,7 +26,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(BookRequestDto createBookRequestDto) {
-        if (existByIsbn(IsbnFormatter.format(createBookRequestDto.getIsbn()))) {
+        if (existsByIsbn(IsbnFormatter.format(createBookRequestDto.getIsbn()))) {
             throw new NotUniqueValueException("ISBN must be unique");
         }
         Book book = bookMapper.toModel(createBookRequestDto);
@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService {
         BookDto existingBook = findById(id);
         String oldIsbn = existingBook.getIsbn();
         String newIsbn = IsbnFormatter.format(updateBookRequestDto.getIsbn());
-        if (existByIsbn(newIsbn) && !oldIsbn.equals(newIsbn)) {
+        if (existsByIsbn(newIsbn) && !oldIsbn.equals(newIsbn)) {
             throw new NotUniqueValueException("ISBN must be unique");
         }
         Book updatedBook = bookMapper.toModel(updateBookRequestDto);
@@ -76,7 +76,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean existByIsbn(String isbn) {
+    public boolean existsByIsbn(String isbn) {
         return bookRepository.existsByIsbn(isbn);
     }
 }
