@@ -11,6 +11,7 @@ import mate.academy.bookshop.model.Book;
 import mate.academy.bookshop.repository.BookRepository;
 import mate.academy.bookshop.service.BookService;
 import mate.academy.bookshop.specification.book.BookSpecificationBuilder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -49,14 +50,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findAll() {
+    public List<BookDto> findAll(Pageable pageable) {
         return bookRepository.findAll().stream()
                 .map(bookMapper::toDto)
                 .toList();
     }
 
     @Override
-    public List<BookDto> search(BookSearchParameters bookSearchParameters) {
+    public List<BookDto> search(Pageable pageable, BookSearchParameters bookSearchParameters) {
         Specification<Book> bookSpecification
                 = bookSpecificationBuilder.build(bookSearchParameters);
         return bookRepository.findAll(bookSpecification).stream()
