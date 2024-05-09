@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {
-
     BookDto toDto(Book book);
 
     @Mapping(target = "isbn", expression = "java(mate.academy.bookshop.util.IsbnFormatter"

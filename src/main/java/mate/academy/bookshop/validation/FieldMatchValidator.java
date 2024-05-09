@@ -3,7 +3,6 @@ package mate.academy.bookshop.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
     private String firstField;
@@ -24,16 +23,12 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
     }
 
     private Object getFieldValueByName(Object object, String fieldName) {
-        Field[] fields = object.getClass().getDeclaredFields();
-        Field field = Arrays.stream(fields)
-                .filter(f -> f.getName().equals(fieldName))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Field with this name not found"));
-        field.setAccessible(true);
         try {
+            Field field = object.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
             return field.get(object);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Can't get field value");
+        } catch (Exception e) {
+            throw new RuntimeException("Can't get field value", e);
         }
     }
 }

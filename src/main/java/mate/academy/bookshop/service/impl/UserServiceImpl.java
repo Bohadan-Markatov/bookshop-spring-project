@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkEmailAvailability(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new RegistrationException("This email is already used");
+            throw new RegistrationException("Email: " + email + " is already used");
         }
     }
 }

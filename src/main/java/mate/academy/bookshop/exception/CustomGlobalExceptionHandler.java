@@ -39,9 +39,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({
-            EntityNotFoundException.class,
-    })
+    @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleCustomNotFoundException(RuntimeException ex) {
         ResponseErrorDto errorDto = getResponseErrorDto(
                 LocalDateTime.now(), HttpStatus.NOT_FOUND, List.of(ex.getMessage()));
