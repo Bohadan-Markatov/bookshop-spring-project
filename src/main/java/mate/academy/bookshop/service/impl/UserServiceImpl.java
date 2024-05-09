@@ -18,15 +18,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto save(UserRegistrationRequestDto dto) {
-        if (existsByEmail(dto.getEmail())) {
-            throw new RegistrationException("This email is already used");
-        }
+        checkEmailAvailability(dto.getEmail());
         User user = userRepository.save(userMapper.toModel(dto));
         return userMapper.toDto(user);
     }
 
     @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public void checkEmailAvailability(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new RegistrationException("This email is already used");
+        }
     }
 }

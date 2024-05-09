@@ -31,13 +31,21 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler({
             NotUniqueValueException.class,
-            EntityNotFoundException.class,
             RegistrationException.class
     })
-    public ResponseEntity<Object> handleCustomException(RuntimeException ex) {
+    public ResponseEntity<Object> handleCustomBadRequestException(RuntimeException ex) {
         ResponseErrorDto errorDto = getResponseErrorDto(
                 LocalDateTime.now(), HttpStatus.BAD_REQUEST, List.of(ex.getMessage()));
         return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({
+            EntityNotFoundException.class,
+    })
+    public ResponseEntity<Object> handleCustomNotFoundException(RuntimeException ex) {
+        ResponseErrorDto errorDto = getResponseErrorDto(
+                LocalDateTime.now(), HttpStatus.NOT_FOUND, List.of(ex.getMessage()));
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
     }
 
     private ResponseErrorDto getResponseErrorDto(LocalDateTime dateTime,

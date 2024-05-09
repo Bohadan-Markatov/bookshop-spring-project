@@ -6,5 +6,5 @@ import mate.academy.bookshop.dto.user.UserResponseDto;
 public interface UserService {
     UserResponseDto save(UserRegistrationRequestDto dto);
 
-    boolean existsByEmail(String email);
+    void checkEmailAvailability(String email);
 }
