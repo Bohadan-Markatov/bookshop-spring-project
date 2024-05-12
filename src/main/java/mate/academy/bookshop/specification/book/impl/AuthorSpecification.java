@@ -1,7 +1,7 @@
 package mate.academy.bookshop.specification.book.impl;
 
 import java.util.Arrays;
-import mate.academy.bookshop.dto.BookSearchParameters;
+import mate.academy.bookshop.dto.book.BookSearchParameters;
 import mate.academy.bookshop.model.Book;
 import mate.academy.bookshop.specification.book.BookSpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
