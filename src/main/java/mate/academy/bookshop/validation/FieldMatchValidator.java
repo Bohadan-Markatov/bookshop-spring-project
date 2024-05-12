@@ -28,7 +28,7 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
             field.setAccessible(true);
             return field.get(object);
         } catch (Exception e) {
-            throw new RuntimeException("Can't get field value", e);
+            throw new IllegalArgumentException("Can't get field value", e);
         }
     }
 }
