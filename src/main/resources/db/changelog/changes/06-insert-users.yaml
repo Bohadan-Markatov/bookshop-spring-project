@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-users
+      author: Bohdan
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: {name: email, value: "biba@gmail.com"}
+              - column: {name: password, value: "$2a$10$6uzZX3OekotbkrPKs/CiPeGdRP4ea.d1naYdZrsz6XGH3yjBNTA.O"}
+              - column: {name: first_name, value: "Biba"}
+              - column: {name: last_name, value: "Biba"}
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "boba@gmail.com" }
+              - column: { name: password, value: "$2a$10$6uzZX3OekotbkrPKs/CiPeGdRP4ea.d1naYdZrsz6XGH3yjBNTA.O" }
+              - column: { name: first_name, value: "Boba" }
+              - column: { name: last_name, value: "Boba" }

@@ -1,26 +1,36 @@
 package mate.academy.bookshop.service.impl;
 
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookshop.dto.user.UserRegistrationRequestDto;
 import mate.academy.bookshop.dto.user.UserResponseDto;
 import mate.academy.bookshop.exception.RegistrationException;
 import mate.academy.bookshop.mapper.UserMapper;
+import mate.academy.bookshop.model.Role;
 import mate.academy.bookshop.model.User;
+import mate.academy.bookshop.repository.RoleRepository;
 import mate.academy.bookshop.repository.UserRepository;
 import mate.academy.bookshop.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final Role.RoleName DEFAULT_ROLE_NAME = Role.RoleName.USER;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Override
     public UserResponseDto save(UserRegistrationRequestDto dto) {
         checkEmailAvailability(dto.getEmail());
-        User user = userRepository.save(userMapper.toModel(dto));
-        return userMapper.toDto(user);
+        User user = userMapper.toModel(dto);
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        Role defaultRole = roleRepository.findByName(DEFAULT_ROLE_NAME);
+        user.setRoles(Set.of(defaultRole));
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
