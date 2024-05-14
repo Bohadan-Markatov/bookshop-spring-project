@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Bohdan
       changes:
         - createTable:
-            tableName: user
+            tableName: users
             columns:
               - column:
                   name: id
@@ -20,7 +20,7 @@ databaseChangeLog:
                     unique: true
               - column:
                   name: password
-                  type: varchar(30)
+                  type: varchar(100)
                   constraints:
                     nullable: false
               - column:
