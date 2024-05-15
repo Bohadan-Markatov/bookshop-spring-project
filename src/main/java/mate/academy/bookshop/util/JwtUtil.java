@@ -2,7 +2,6 @@ package mate.academy.bookshop.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
@@ -40,7 +39,7 @@ public class JwtUtil {
 
             return !claimsJws.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            throw new JwtException("Expired or invalid JWT token", e);
+            return false;
         }
     }
 
