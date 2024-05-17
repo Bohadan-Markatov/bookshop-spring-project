@@ -2,6 +2,7 @@ package mate.academy.bookshop.service;
 
 import java.util.List;
 import mate.academy.bookshop.dto.book.BookDto;
+import mate.academy.bookshop.dto.book.BookDtoWithoutCategoryIds;
 import mate.academy.bookshop.dto.book.BookRequestDto;
 import mate.academy.bookshop.dto.book.BookSearchParameters;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,5 @@ public interface BookService {
 
     boolean existsByIsbn(String isbn);
 
+    List<BookDtoWithoutCategoryIds> findAllByCategoryIds(Pageable pageable, Long id);
 }
