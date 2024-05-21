@@ -65,6 +65,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public Set<Category> getCategories(Set<Long> categoriesIds) {
-        return categoryRepository.findByIdIn(categoriesIds);
+        Set<Category> categories = categoryRepository.findByIdIn(categoriesIds);
+        if (categoriesIds.size() == categories.size()) {
+            return categoryRepository.findByIdIn(categoriesIds);
+        }
+        if (!categories.isEmpty()) {
+            categories.stream()
+                    .map(Category::getId)
+                    .filter(categoriesIds::contains)
+                    .forEach(categoriesIds::remove);
+        }
+        throw new EntityNotFoundException("There are no categories "
+                + "with these ids: " + categoriesIds);
     }
 }
