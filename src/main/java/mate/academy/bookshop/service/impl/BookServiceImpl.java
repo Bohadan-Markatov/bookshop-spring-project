@@ -3,6 +3,7 @@ package mate.academy.bookshop.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookshop.dto.book.BookDto;
+import mate.academy.bookshop.dto.book.BookDtoWithoutCategoryIds;
 import mate.academy.bookshop.dto.book.BookRequestDto;
 import mate.academy.bookshop.dto.book.BookSearchParameters;
 import mate.academy.bookshop.exception.EntityNotFoundException;
@@ -11,6 +12,7 @@ import mate.academy.bookshop.mapper.BookMapper;
 import mate.academy.bookshop.model.Book;
 import mate.academy.bookshop.repository.BookRepository;
 import mate.academy.bookshop.service.BookService;
+import mate.academy.bookshop.service.CategoryService;
 import mate.academy.bookshop.specification.book.BookSpecificationBuilder;
 import mate.academy.bookshop.util.IsbnFormatter;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder bookSpecificationBuilder;
+    private final CategoryService categoryService;
 
     @Override
     public BookDto save(BookRequestDto createBookRequestDto) {
@@ -30,6 +33,10 @@ public class BookServiceImpl implements BookService {
             throw new NotUniqueValueException("ISBN must be unique");
         }
         Book book = bookMapper.toModel(createBookRequestDto);
+        if (doesCategoryExist(createBookRequestDto)) {
+            book.setCategories(categoryService
+                    .getCategories(createBookRequestDto.getCategoriesId()));
+        }
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -42,6 +49,10 @@ public class BookServiceImpl implements BookService {
             throw new NotUniqueValueException("ISBN must be unique");
         }
         Book updatedBook = bookMapper.toModel(updateBookRequestDto);
+        if (doesCategoryExist(updateBookRequestDto)) {
+            updatedBook.setCategories(categoryService
+                    .getCategories(updateBookRequestDto.getCategoriesId()));
+        }
         updatedBook.setId(id);
         return bookMapper.toDto(bookRepository.save(updatedBook));
     }
@@ -78,5 +89,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public boolean existsByIsbn(String isbn) {
         return bookRepository.existsByIsbn(isbn);
+    }
+
+    @Override
+    public List<BookDtoWithoutCategoryIds> findAllByCategoryIds(Pageable pageable, Long id) {
+        categoryService.validateCategory(id);
+        return bookRepository.findAllByCategoryId(pageable, id).stream()
+                .map(bookMapper::toDtoWithoutCategories)
+                .toList();
+    }
+
+    private boolean doesCategoryExist(BookRequestDto dto) {
+        return dto.getCategoriesId() != null && !dto.getCategoriesId().isEmpty();
     }
 }

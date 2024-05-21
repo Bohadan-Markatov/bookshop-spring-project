@@ -31,7 +31,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler({
             NotUniqueValueException.class,
-            RegistrationException.class
+            RegistrationException.class,
     })
     public ResponseEntity<Object> handleCustomBadRequestException(RuntimeException ex) {
         ResponseErrorDto errorDto = getResponseErrorDto(
