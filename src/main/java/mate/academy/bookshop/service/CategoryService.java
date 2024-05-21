@@ -1,8 +1,10 @@
 package mate.academy.bookshop.service;
 
 import java.util.List;
+import java.util.Set;
 import mate.academy.bookshop.dto.category.CategoryDto;
 import mate.academy.bookshop.dto.category.CategoryRequestDto;
+import mate.academy.bookshop.model.Category;
 import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
@@ -15,4 +17,8 @@ public interface CategoryService {
     CategoryDto update(Long id, CategoryRequestDto categoryDto);
 
     void deleteById(Long id);
+
+    void validateCategory(Long id);
+
+    public Set<Category> getCategories(Set<Long> categoriesIds);
 }

@@ -1,6 +1,7 @@
 package mate.academy.bookshop.service.impl;
 
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookshop.dto.category.CategoryDto;
 import mate.academy.bookshop.dto.category.CategoryRequestDto;
@@ -44,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto update(Long id, CategoryRequestDto categoryDto) {
-        getById(id);
+        validateCategory(id);
         Category updatedCategory = categoryMapper.toEntity(categoryDto);
         updatedCategory.setId(id);
         return categoryMapper.toDto(categoryRepository.save(updatedCategory));
@@ -52,7 +53,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteById(Long id) {
-        getById(id);
+        validateCategory(id);
         categoryRepository.deleteById(id);
+    }
+
+    public void validateCategory(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new EntityNotFoundException("Category with such id: "
+                    + id + " not exist");
+        }
+    }
+
+    public Set<Category> getCategories(Set<Long> categoriesIds) {
+        return categoryRepository.findByIdIn(categoriesIds);
     }
 }
