@@ -39,12 +39,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartResponseDto getByUserId(Long userId) {
-        return shoppingChartMapper.toDto(shoppingCartRepository.findByUserId(userId));
+        return shoppingChartMapper.toDto(getCartByUserId(userId));
     }
 
     @Override
     public ShoppingCartResponseDto addBook(Long userId, CartItemCreateDto createDto) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId);
+        ShoppingCart shoppingCart = getCartByUserId(userId);
         Book book = bookRepository.findById(createDto.getBookId()).orElseThrow(()
                 -> new EntityNotFoundException("There is no book with this id: "
                 + createDto.getBookId()));
@@ -87,5 +87,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             throw new NotUniqueValueException("This cart item already in cart");
         }
         return cartItemRepository.save(cartItem);
+    }
+
+    private ShoppingCart getCartByUserId(Long userId) {
+        return shoppingCartRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                "Can't find a shopping cart by user id: " + userId));
     }
 }
