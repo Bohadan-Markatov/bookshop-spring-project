@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-order-statuses
+      author: Bohdan
+      changes:
+        - insert:
+            tableName: statuses
+            columns:
+              - column: {name: name, value: "PENDING"}
+        - insert:
+            tableName: statuses
+            columns:
+              - column: {name: name, value: "COMPLETED"}
+        - insert:
+            tableName: statuses
+            columns:
+              - column: { name: name, value: "DELIVERED"}

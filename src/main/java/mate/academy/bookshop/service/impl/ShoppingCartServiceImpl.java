@@ -20,6 +20,7 @@ import mate.academy.bookshop.repository.CartItemRepository;
 import mate.academy.bookshop.repository.ShoppingCartRepository;
 import mate.academy.bookshop.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +69,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void deleteItemById(Long itemId, Long userId) {
         getItemAndCheckOwner(itemId, userId);
         cartItemRepository.deleteById(itemId);
+    }
+
+    @Override
+    @Transactional
+    public void clearShoppingCart(Long cartId) {
+        cartItemRepository.deleteAllByShoppingCartId(cartId);
     }
 
     private CartItem getItemAndCheckOwner(Long itemId, Long ownerId) {
