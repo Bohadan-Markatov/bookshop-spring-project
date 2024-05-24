@@ -77,6 +77,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cartItemRepository.deleteAllByShoppingCartId(cartId);
     }
 
+    @Override
+    public ShoppingCart getNonEmptyCartByUserId(Long userId) {
+        ShoppingCart shoppingCart =
+                shoppingCartRepository.findByUserId(userId).orElseThrow(()
+                        -> new EntityNotFoundException(
+                        "There is no cart with this user id: " + userId));
+        if (!shoppingCart.getCartItems().isEmpty()) {
+            return shoppingCart;
+        }
+        throw new EntityNotFoundException("The cart is empty");
+    }
+
     private CartItem getItemAndCheckOwner(Long itemId, Long ownerId) {
         Optional<CartItem> cartItem = cartItemRepository.findById(itemId);
         if (cartItem.isEmpty() || !cartItem.get().getShoppingCart().getId().equals(ownerId)) {

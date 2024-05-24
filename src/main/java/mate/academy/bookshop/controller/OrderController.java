@@ -39,7 +39,7 @@ public class OrderController {
             Authentication authentication,
             @RequestBody @Valid OrderRequestDto createBookRequestDto) {
         User user = (User) authentication.getPrincipal();
-        return orderService.createOrder(user.getId(), createBookRequestDto);
+        return orderService.addOrder(user.getId(), createBookRequestDto);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

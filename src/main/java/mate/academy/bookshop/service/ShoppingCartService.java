@@ -4,6 +4,7 @@ import mate.academy.bookshop.dto.cart.ShoppingCartResponseDto;
 import mate.academy.bookshop.dto.item.CartItemCreateDto;
 import mate.academy.bookshop.dto.item.CartItemResponseDto;
 import mate.academy.bookshop.dto.item.CartItemUpdateDto;
+import mate.academy.bookshop.model.ShoppingCart;
 import mate.academy.bookshop.model.User;
 
 public interface ShoppingCartService {
@@ -18,4 +19,6 @@ public interface ShoppingCartService {
     void deleteItemById(Long id, Long userId);
 
     void clearShoppingCart(Long cartId);
+
+    ShoppingCart getNonEmptyCartByUserId(Long userId);
 }

@@ -34,13 +34,4 @@ public class OrderItem {
     private int quantity;
     @Column(nullable = false)
     private BigDecimal price;
-
-    public static OrderItem of(CartItem cartItem, Order order) {
-        OrderItem orderItem = new OrderItem();
-        orderItem.order = order;
-        orderItem.book = cartItem.getBook();
-        orderItem.quantity = cartItem.getQuantity();
-        orderItem.price = cartItem.getBook().getPrice();
-        return orderItem;
-    }
 }
