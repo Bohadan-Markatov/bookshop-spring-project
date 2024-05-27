@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-orders-items-table
+      author: Bohdan
+      changes:
+        - createTable:
+            tableName: orders_items
+            columns:
+              - column:
+                  name: order_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: item_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true

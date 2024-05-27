@@ -4,6 +4,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookshop.dto.user.UserRegistrationRequestDto;
 import mate.academy.bookshop.dto.user.UserResponseDto;
+import mate.academy.bookshop.exception.EntityNotFoundException;
 import mate.academy.bookshop.exception.RegistrationException;
 import mate.academy.bookshop.mapper.UserMapper;
 import mate.academy.bookshop.model.Role;
@@ -42,5 +43,13 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(email)) {
             throw new RegistrationException("Email: " + email + " is already used");
         }
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(()
+                        -> new EntityNotFoundException(
+                        "There is no user with this id: " + id));
     }
 }
