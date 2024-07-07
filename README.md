@@ -1,5 +1,5 @@
-Online Book Store
-Project Description
+# Online Book Store
+## Project Description
 The Online Book Store application is designed to facilitate the buying and selling of books. It is developed using Spring Boot and will be implemented in phases. The application consists of several domain models (entities):
 
 User: Contains information about registered users, including authentication details and personal information.
@@ -14,7 +14,7 @@ People Involved
 Shopper (User)
 A user who browses books, adds them to their shopping cart, and purchases them.
 
-Manager (Admin)
+## Manager (Admin)
 A user who manages the book inventory and monitors sales.
 
 Shopper Capabilities
@@ -47,7 +47,7 @@ Manage Bookshelf Sections:
 Create a new bookshelf section.
 Update details of a section.
 Remove a section.
-Manage Receipts:
+## Manage Receipts:
 Update the status of a receipt (e.g., "Shipped", "Delivered").
 Getting Started
 To get started with the project, clone the repository and follow the setup instructions.
