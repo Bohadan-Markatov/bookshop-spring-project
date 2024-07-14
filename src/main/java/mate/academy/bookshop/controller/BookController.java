@@ -9,7 +9,9 @@ import mate.academy.bookshop.dto.book.BookDto;
 import mate.academy.bookshop.dto.book.BookRequestDto;
 import mate.academy.bookshop.dto.book.BookSearchParameters;
 import mate.academy.bookshop.service.BookService;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -63,14 +65,17 @@ public class BookController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
     @Operation(summary = "Get all books", description = "Get all books")
-    public List<BookDto> getAll(Pageable pageable) {
+    public List<BookDto> getAll(@ParameterObject
+                                    @PageableDefault(size = 20, sort = "id") Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/search")
     @Operation(summary = "Get books by parameters", description = "Get books by parameters")
-    public List<BookDto> search(Pageable pageable, BookSearchParameters bookSearchParameters) {
+    public List<BookDto> search(@ParameterObject
+                                    @PageableDefault(size = 20, sort = "id") Pageable pageable,
+                                BookSearchParameters bookSearchParameters) {
         return bookService.search(pageable, bookSearchParameters);
     }
 }
